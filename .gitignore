@@ -1,0 +1,14 @@
+*~
+*.pyc
+*.DS_Store
+.idea
+*.pem
+*.p12
+*.coverage
+*.log
+.sass-cache
+*.datastore
+*.mo
+
+*lib/
+*venv/
