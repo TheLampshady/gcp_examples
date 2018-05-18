@@ -1,0 +1,18 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+service: default
+
+handlers:
+- url: /admin.*
+  login: admin
+  script: routes.ADMIN_APPLICATION
+  secure: always
+
+- url: /.*
+  script: routes.APPLICATION
+  secure: always
+
+libraries:
+- name: webapp2
+  version: latest

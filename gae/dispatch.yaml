@@ -1,0 +1,8 @@
+dispatch:
+  # API service serves Google endpoints.
+  - url: "*/api*"
+    service: api
+
+  # Default service serves simple hostname request.
+  - url: "*/*"
+    service: default
