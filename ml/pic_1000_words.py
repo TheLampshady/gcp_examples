@@ -2,7 +2,7 @@
 import argparse
 import os
 
-from ml.gcp_clients.cloud_client import CloudClient
+from ml.gcp_clients.base_client import CloudClient
 
 
 def get_args():
