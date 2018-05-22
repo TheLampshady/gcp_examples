@@ -16,11 +16,15 @@ if __name__ == "__main__":
     print("Project: %s" % project_name)
     print("Bucket: %s" % bucket_name)
 
-    client = GCSBucket(bucket_name, project_name)
+    root = "sample-site"
 
-    root = "sample_site"
-    # client.upload_folder(root, True)
-    # client.upload_file(root + "/404.html", True)
-    client.website_config(root + "/index.html", root + "/404.html", token=token)
+    client = GCSBucket(bucket_name, project_name)
+    # client = GCSBucket(root+"-dev", project_name)
+
+
+    # client.upload_folder(root, make_public=True)
+    # client.website_config()
+    # client.upload_file(root + "/404.html", make_public=True)
+    # client.website_config("index.html", "404.html", token=token)
     print("Done!")
 

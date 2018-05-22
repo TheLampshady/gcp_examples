@@ -2,7 +2,7 @@
 import argparse
 import os
 
-from ml.gcp_clients.base_client import CloudClient
+from ml.gcp_clients.base_client import GCPClient
 
 
 def get_args():
@@ -16,6 +16,6 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     api_key = os.environ.get('GCP_API_KEY')
-    client = CloudClient(api_key)
+    client = GCPClient(api_key)
     text = client.english_from_image(args.image, args.image)
     print(text)
