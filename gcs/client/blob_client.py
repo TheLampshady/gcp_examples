@@ -2,14 +2,13 @@ import json
 import logging
 from os.path import splitext, join
 from os import walk
+import urllib2
 
 import requests
 from google.cloud import storage
 
 
 class GCSBucket(object):
-    ENDPOINT = "https://www.googleapis.com/storage/v1/b/"
-
     CONTENT_TYPE = {
         "html": "text/html",
         "js": "application/javascript",
@@ -40,9 +39,11 @@ class GCSBucket(object):
         self.bucket_name = bucket_name
         self.storage_client = storage.Client(project)
 
-    def create_bucket(self, bucket_name):
+    def create_bucket(self, bucket_name, make_public=False):
         """Creates a new bucket."""
         self._bucket = self.storage_client.create_bucket(bucket_name)
+        if make_public:
+            self._bucket.make_public(recursive=True, future=True)
         print("Bucket {} created".format(self._bucket.name))
 
     @property
@@ -67,17 +68,19 @@ class GCSBucket(object):
 
         print("GCS Upload Complete: {}".format(gcs_path))
 
-    def upload_folder(self, dir_name, make_public=False):
+    def upload_folder(self, dir_src, dir_dest=None, make_public=False):
         site_list = [
             join(dir_path, file_name)
-            for (dir_path, _, file_names) in walk(dir_name)
+            for (dir_path, _, file_names) in walk(dir_src)
             for file_name in file_names if self.get_ext(file_name) in self.CONTENT_TYPE
         ]
 
         for file_name in site_list:
             with open(file_name, 'r') as myfile:
                 content = myfile.read()
-            self.upload_content(content, file_name, make_public)
+            if dir_dest:
+                file_name = file_name.replace(dir_src, dir_dest, 1)
+            self.upload_content(content, file_name, make_public=make_public)
 
     def upload_file(self, gcs_path, make_public=False):
         """Uploads a file to the bucket."""
@@ -101,31 +104,27 @@ class GCSBucket(object):
             blob.make_public()
             print("GCS Made Public: {}".format(blob.name))
 
-    def website_config(self, index=None, not_found=None, token=""):
+    def website_config(self, main_page_suffix="index.html", not_found_page="404.html"):
         """
+        Seems to receive a 200 but no update the config (WIP)
         :param index:       index page filename
         :param not_found:   404 page filename
         :param token:       Authorization Bearer
                             Note: https://developers.google.com/oauthplayground/
         """
-        if not token:
-            logging.warning("AUth Error: Need GCP token. Visit https://developers.google.com/oauthplayground/")
-            return
-        url = self.ENDPOINT + self.bucket_name
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer %s' % token
-        }
-        data = dict(website=dict())
-        if index:
-            data['website']['mainPageSuffix'] = index
-        if not_found:
-            data['website']['notFoundPage'] = not_found
-        r = requests.patch(url, headers=headers, json=json.dumps(data))
-        if r.status_code != 200:
-            logging.error(json.dumps(r.json(), indent=4))
-        else:
-            print("GCS Website Config Set: {}".format(r.status_code))
+        self.bucket.configure_website(main_page_suffix, not_found_page)
+        self.bucket.update()
+        print("GCS Website Config Set: {}".format(self.bucket_name))
+
+    def set_cors(self):
+        policies = self.bucket.cors
+        policies.append(
+            {'origin': '/foo', 'next': '/bar'}
+        )
+        policies[1]['maxAgeSeconds'] = 3600
+        # del policies[0]
+        self.bucket.cors = policies
+        self.bucket.update()
 
     @staticmethod
     def get_ext(value):
