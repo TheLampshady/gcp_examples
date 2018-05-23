@@ -85,6 +85,8 @@ Save and continue
 ### SSL Certificates
 TODO
 
+**Ref:** https://cloud.google.com/compute/docs/load-balancing/http/ssl-certificates
+
 ### DNS
 
 Create an A record pointing to the IP address created by the Load balancer
