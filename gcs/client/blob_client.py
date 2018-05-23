@@ -1,10 +1,7 @@
-import json
 import logging
 from os.path import splitext, join
 from os import walk
-import urllib2
 
-import requests
 from google.cloud import storage
 
 
