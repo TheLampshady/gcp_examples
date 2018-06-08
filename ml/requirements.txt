@@ -2,4 +2,5 @@ requests
 google-cloud-bigquery
 google-cloud-language
 google-cloud-storage
+google-cloud-speech
 ipython==5
