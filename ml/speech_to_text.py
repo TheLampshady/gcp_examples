@@ -2,7 +2,7 @@
 import argparse
 import os
 
-from ml.gcp_clients.speech_client import SpeechClient
+from gcp_clients.speech_client import SpeechClient
 
 
 def get_args():
@@ -16,5 +16,5 @@ if __name__ == "__main__":
     args = get_args()
     api_key = os.environ.get('GCP_API_KEY')
     client = SpeechClient(api_key)
-    text = client.process_long_audio(args.audio)
-    print(text)
+    resp = client.process_long_audio(args.audio)
+    print("\n".join(resp))

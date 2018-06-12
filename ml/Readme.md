@@ -87,6 +87,19 @@ Win
 Base64.exe -e source_audio_file > dest_audio_file
 ```
 
+**Audio Converter**
+
+https://www.ffmpeg.org/
+
+```bash
+npm i --save linear16
+```
+
+**Discovery API**
+
+https://cloud.google.com/speech-to-text/docs/basics
+
+
 
 ## Python GCP Lib Setup
 ### Google Cloud Client
