@@ -58,11 +58,11 @@ class SpeechClient(GCPClient):
         ext = os.path.splitext(audio_url)[1].lower()
         payload = self.build_long_payload(audio_url)
 
-        # result = self.post(payload, self.endpoint_long)
-        # if not result.get('name'):
-        #     logging.warning("No response found.")
-        #     return dict()
-        result = dict(name='8858890520680468903')
+        result = self.post(payload, self.endpoint_long)
+        if not result.get('name'):
+            logging.warning("No response found.")
+            return dict()
+
         response = self._poll_endpoint(self.endpoint_operation + result['name'])
 
         self.response = response
