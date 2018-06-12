@@ -1,6 +1,9 @@
 import base64
 import logging
+import os
 import re
+
+from time import sleep
 
 from base_client import GCPClient
 
@@ -13,7 +16,6 @@ class SpeechClient(GCPClient):
         self.endpoint_long = 'https://speech.googleapis.com/v1/speech:longrunningrecognize'
         self.endpoint_operation = "https://speech.googleapis.com/v1/operations/"
 
-        self.endpoint =self.endpoint_long
         self.response = dict()
 
     @staticmethod
@@ -29,51 +31,60 @@ class SpeechClient(GCPClient):
                 "languageCode": "en-US",
                 "model": "default"
         }
-
-        return {
-            "audio": {
+        audio = {
                 "content": content
-            },
+        }
+        return {
+            "audio": audio,
             "config": config
         }
+
 
     @staticmethod
     def build_long_payload(audio_url):
         config = {
-            "encoding": "AMR_WB",
-            "languageCode": "en-US",
-            # "sampleRateHertz ": 16000
+            'language_code': 'en-US',
+        }
+        audio = {
+                'uri': audio_url
         }
 
         return {
-            "audio": {
-                "uri": audio_url
-            },
-            "config": config
-    }
-
-    @staticmethod
-    def build_flac_payload(audio_url):
-        config = {
-            "encoding": "FLAC",
-            "languageCode": "en-US",
-        }
-
-        return {
-            "audio": {
-                "uri": audio_url
-            },
-            "config": config
+            'audio': audio,
+            'config': config
     }
 
     def process_long_audio(self, audio_url):
+        ext = os.path.splitext(audio_url)[1].lower()
         payload = self.build_long_payload(audio_url)
-        result = self.post(payload)
-        if not result.get('responses'):
-            logging.warning("No response found.")
+
+        # result = self.post(payload, self.endpoint_long)
+        # if not result.get('name'):
+        #     logging.warning("No response found.")
+        #     return dict()
+        result = dict(name='8858890520680468903')
+        response = self._poll_endpoint(self.endpoint_operation + result['name'])
+
+        self.response = response
+        return self.build_response()
+
+    def _poll_endpoint(self, url):
+        while True:
+            result = self.get(url)
+            if not result or result.get('done'):
+                return result.get('response')
+            sleep(10)
+            progress = result.get('metadata', {}).get('progressPercent', 0)
+            print("Progress: %d%%" % progress)
+
+    def build_response(self):
+        if not self.response.get('results'):
+            logging.warning("No result found.")
             return dict()
-        self.response = result['responses'][0]
-        return self.response
+        return [
+            entry.get('alternatives', [dict()])[0].get('transcript', '').strip().capitalize()
+            for entry in self.response['results']
+        ]
 
 
 def camel_to_title(value):
