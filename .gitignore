@@ -13,5 +13,6 @@
 *lib/
 *venv/
 
-Jeys
+# Keys
 service_account.json
+network/*.json
