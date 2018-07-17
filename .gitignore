@@ -12,3 +12,7 @@
 
 *lib/
 *venv/
+
+# Keys
+service_account.json
+network/*.json

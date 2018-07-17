@@ -39,6 +39,17 @@ class GCPClient(object):
 
         return r.json()
 
+    def get(self, url=None):
+        r = requests.get(url or self.endpoint, headers=self.headers, params=self.params)
+
+        if r.status_code != 200:
+            logging.warning("Request Error Code: %s" % r.status_code)
+            message = r.json().get('error', {}).get('message', '')
+            logging.warning("Request Error Message: %s" % message)
+            return dict()
+
+        return r.json()
+
     @staticmethod
     def get_image_payload(image_url, features=TEXT_DETECTION, max_results=10):
         if isinstance(features, basestring):

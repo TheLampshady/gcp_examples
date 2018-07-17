@@ -71,6 +71,36 @@ config = client.format_nlp(result)
 print(config)
 ```
 
+### Speech to Text
+Enable API
+```
+https://console.developers.google.com/apis/api/speech.googleapis.com/overview
+```
+
+Encoding
+Mac:
+```
+base64 source_audio_file > dest_audio_file
+```
+Win
+```
+Base64.exe -e source_audio_file > dest_audio_file
+```
+
+**Audio Converter**
+
+https://www.ffmpeg.org/
+
+```bash
+npm i --save linear16
+```
+
+**Discovery API**
+
+https://cloud.google.com/speech-to-text/docs/basics
+
+
+
 ## Python GCP Lib Setup
 ### Google Cloud Client
 Used for python libs installed with pip
