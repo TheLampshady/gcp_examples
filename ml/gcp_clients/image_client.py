@@ -2,7 +2,7 @@ import re
 import logging
 import json
 
-from base_client import GCPClient
+from .base_client import GCPClient
 
 WEB_IMAGE = 'imageUri'
 GCS_IMAGE = 'gcsImageUri'
