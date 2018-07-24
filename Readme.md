@@ -53,5 +53,20 @@ gcloud auth login
 [Tutorial: Image/Translations/NLP](ml/Readme.md)
 
 # Datalabs
-Start up a GCP Web consolw with data labs
+Starting up a GCP Web console with data labs
+
+## Enable API:
+Requires cloud source API 
+
+https://console.developers.google.com/apis/api/sourcerepo.googleapis.com/overview?project=<PROJECT_ID>
+
+## Commands
+datalab create <my-name>
+-  I like option 2 (us-east1-c)
+- 'Y' for SSH keys
+- Password is up to you (takes 5 min)
+
+## Running
+- datalab run <my-name>
+- Using the web preview, change the port to the port shown (8081)
 
