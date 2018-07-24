@@ -122,7 +122,7 @@ class ImageClient(GCPClient):
                 if values else []
             )
         print("Faces Found: %d" % len(faces))
-        print("\n".join([", ".join(entry) for entry in result]))
+        print("\n".join([", ".join(entry) if entry else "Empty" for entry in result]))
 
         if debug:
             print("")
