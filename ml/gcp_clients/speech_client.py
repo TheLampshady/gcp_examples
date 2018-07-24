@@ -39,7 +39,6 @@ class SpeechClient(GCPClient):
             "config": config
         }
 
-
     @staticmethod
     def build_long_payload(audio_url):
         config = {

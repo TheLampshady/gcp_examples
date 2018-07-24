@@ -51,3 +51,7 @@ gcloud auth login
 
 # Google Machine Learning
 [Tutorial: Image/Translations/NLP](ml/Readme.md)
+
+# Datalabs
+Start up a GCP Web consolw with data labs
+
