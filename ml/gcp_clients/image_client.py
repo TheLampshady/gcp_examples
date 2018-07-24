@@ -117,7 +117,7 @@ class ImageClient(GCPClient):
             values = [
                 (camel_to_title(key.replace('Likelihood', '')), LIKELIHOOD[value])
                 for key, value in face.items()
-                if isinstance(value, basestring) and LIKELIHOOD.get(value, 0) > THRESHOLD
+                if isinstance(value, string_types) and LIKELIHOOD.get(value, 0) > THRESHOLD
             ]
 
             result.append(
