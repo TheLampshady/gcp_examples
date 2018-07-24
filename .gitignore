@@ -16,3 +16,6 @@
 # Keys
 service_account.json
 network/*.json
+
+# Jupyter
+*.ipynb_checkpoints/

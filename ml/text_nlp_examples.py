@@ -1,4 +1,5 @@
 # coding=utf-8
+import json
 import os
 from ml.gcp_clients.base_client import GCPClient
 from ml.gcp_clients.image_client import ImageClient
@@ -17,8 +18,7 @@ text = client.translation_from_text(text)
 print(text)
 
 # NLP API
-config = client.nlp_from_text(text)
-print(config)
+entries = client.nlp_from_text(text, debug=True)
 
 # Classify
 classy_text = u"A Smoky Lobster Salad With a Tapa Twist. This spin on the Spanish pulpo a la gallega skips the " \
@@ -26,10 +26,11 @@ classy_text = u"A Smoky Lobster Salad With a Tapa Twist. This spin on the Spanis
 
 classification = client.get_classification(classy_text)
 print(client.format_classification(classification))
+print("")
 
 
 # Image Class
 image_client = ImageClient(api_key)
 image_url = 'https://media.gettyimages.com/photos/large-crowd-of-people-cheering-and-raising-their-fists-picture-iddv1992030'
-image_client.process_image(image_url, ['TEXT_DETECTION', 'LABEL_DETECTION', 'WEB_DETECTION', 'FACE_DETECTION', 'LANDMARK_DETECTION'], 10)
-image_client.display_faces()
+image_client.process_image(image_url, ['TEXT_DETECTION', 'LABEL_DETECTION', 'WEB_DETECTION', 'FACE_DETECTION', 'LANDMARK_DETECTION'], 50)
+image_client.display_faces(debug=True)

@@ -1,5 +1,6 @@
 import re
 import logging
+import json
 
 from base_client import GCPClient
 
@@ -98,13 +99,18 @@ class ImageClient(GCPClient):
             return ''
         return self.response[response_name][0].get('description', '')
 
-    def display_faces(self):
+    def display_faces(self, debug=False):
+        """
+        Formats the response and parses the face detection features
+        :return:
+        """
         response_name = API_CONFIG.get(FACE_DETECTION, [''])[0]
         if not self.response.get(response_name):
             logging.warning("No Faces Detected.")
             return ''
         result = []
-        for face in self.response[response_name]:
+        faces = self.response[response_name]
+        for face in faces:
             values = [
                 (camel_to_title(key.replace('Likelihood', '')), LIKELIHOOD[value])
                 for key, value in face.items()
@@ -115,7 +121,13 @@ class ImageClient(GCPClient):
                 [x[0] for x in sorted(values, key=lambda x: x[1])]
                 if values else []
             )
-        return result
+        print("Faces Found: %d" % len(faces))
+        print("\n".join([", ".join(entry) for entry in result]))
+
+        if debug:
+            print("")
+            print("Example Fields:")
+            print(faces[0].keys())
 
 
 def camel_to_title(value):

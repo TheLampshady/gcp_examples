@@ -72,6 +72,11 @@ class GCPClient(object):
 
     @staticmethod
     def text_from_response(result):
+        """
+        Parses a response from annotate image endpoint and returns the text
+        :param result: dict
+        :return: str
+        """
         if not result.get('responses'):
             logging.warning("No text response found.")
             return ''
@@ -112,14 +117,26 @@ class GCPClient(object):
             return list()
         return result['tokens']
 
+    def display_nlp_tokens(self, tokens):
+        for token in tokens[:]:
+            entry = self.format_entry(token)
+            word = entry.pop('word')
+            print("%s: %s" % (word, json.dumps(entry['properties'], indent=4)))
+
     @staticmethod
-    def format_nlp(result, index=0):
-        token = result['tokens'][index] \
-            if len(result.get('tokens', [])) > index \
-            else dict()
-        print("Original Text: %s" % token.get('text', {}).get('content', ''))
-        print("Lemma: %s" % token.get('lemma', ''))
-        print(json.dumps(token.get('partOfSpeech', {}), indent=3))
+    def format_entry(token):
+        pos_data = token.get('partOfSpeech', {})
+        properties = {
+            key: value
+            for key, value in pos_data.iteritems()
+            if "UNKNOWN" not in value.upper()
+        }
+        properties['lemma'] = token.get('lemma', '')
+        word = token.get('text', {}).get('content', '')
+        return dict(
+            word=word,
+            properties=properties
+        )
 
     def get_classification(self, text, doc_type="PLAIN_TEXT"):
         payload = {
@@ -147,10 +164,25 @@ class GCPClient(object):
         result = self.post(payload, self.TRANSLATE_ENDPOINT)
         return self.translation_from_response(result)
 
-    def nlp_from_text(self, text):
+    def nlp_from_text(self, text, display=True, debug=False):
+        """
+        Returns a list of tokens with properties of speech
+        :param display: Prints user friendly content
+        :param text: Text to analyze
+        :return: list of dicts
+        """
         payload = self.get_doc_payload(text)
         result = self.post(payload, self.NLP_SYNTAX_ENDPOINT)
-        return self.format_nlp(result)
+        tokens = result.get('tokens', [])
+        if display:
+            self.display_nlp_tokens(tokens)
+            if debug:
+                print("")
+                print("NLP Fields:")
+                print(tokens[0].get(u'partOfSpeech',{}).keys())
+            print("")
+
+        return tokens
 
     def english_from_image(self, image, locale=ENGLISH):
         text = self.text_from_image(image)
