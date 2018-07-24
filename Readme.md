@@ -53,6 +53,8 @@ gcloud auth login
 [Tutorial: Image/Translations/NLP](ml/Readme.md)
 
 # Datalabs
+Datalabs is a CLI tool for running Jupyter and ungit.
+
 Starting up a GCP Web console with data labs
 
 ## Enable API:
@@ -70,3 +72,8 @@ datalab create <my-name>
 - datalab run <my-name>
 - Using the web preview, change the port to the port shown (8081)
 
+## Ungit
+A GUI for using Git
+
+- Change directory back a level to start a new repo
+- Create a repo with HTTPS and folder name
