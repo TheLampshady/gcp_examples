@@ -20,12 +20,14 @@ virtualenv venv
 . venv/bin/activate
 ```
 
-## Setup gcloud
+## GCloud
+**Web Console**
 1. Create a project at: `https://console.cloud.google.com/`
 2. Create a Python project at: `https://console.cloud.google.com/appengine/versions`
 3. Take note of the project id form the url (Not the User friendly name)
 
-## Google Cloud SDK
+**SDK**
+
 Check to see if you have gcloud set up. If you do no have gcloud, install and reopen term
 ```bash
 gcloud --version
@@ -45,35 +47,44 @@ If not, lets login.
 gcloud auth login
 ```
 
+# Projects
+**Google App Engine**
 
-# Google App Engine
 [Tutorial: GAE Multi-Service with Endpoints](gae/Readme.md)
 
-# Google Machine Learning
+**Google Machine Learning**
+
 [Tutorial: Image/Translations/NLP](ml/Readme.md)
+
 
 # Datalabs
 Datalabs is a CLI tool for running Jupyter and ungit.
 
 Starting up a GCP Web console with data labs
 
-## Enable API:
-Requires cloud source API 
+## Setup GCP VM
 
-https://console.developers.google.com/apis/api/sourcerepo.googleapis.com/overview?project=<PROJECT_ID>
+**Required APIs**
+* Compute Engine
+  * https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=
+* Cloud Source Repositories API
+  * https://console.developers.google.com/apis/api/sourcerepo.googleapis.com/overview?project=
+
 
 ## Commands
-datalab create <my-name>
--  I like option 2 (us-east1-c)
-- 'Y' for SSH keys
-- Password is up to you (takes 5 min)
+**Create**
 
-## Running
-- datalab run <my-name>
-- Using the web preview, change the port to the port shown (8081)
+datalab create <my-name>
+* I like option 2 (us-east1-c)
+* 'Y' for SSH keys
+* Password is up to you (takes 5 min)
+
+**Running**
+* datalab run <my-name>
+* Using the web preview, change the port to the port shown (8081)
 
 ## Ungit
 A GUI for using Git
 
-- Change directory back a level to start a new repo
-- Create a repo with HTTPS and folder name
+* Change directory back a level to start a new repo
+* Create a repo with HTTPS and folder name
