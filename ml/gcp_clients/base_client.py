@@ -2,6 +2,8 @@ import json
 import logging
 import requests
 
+from six import string_types
+
 WEB_IMAGE = 'imageUri'
 GCS_IMAGE = 'gcsImageUri'
 MAX_RESULTS = 'maxResults'
@@ -52,7 +54,7 @@ class GCPClient(object):
 
     @staticmethod
     def get_image_payload(image_url, features=TEXT_DETECTION, max_results=10):
-        if isinstance(features, basestring):
+        if isinstance(features, string_types):
             features = [features]
 
         image = {
@@ -128,7 +130,7 @@ class GCPClient(object):
         pos_data = token.get('partOfSpeech', {})
         properties = {
             key: value
-            for key, value in pos_data.iteritems()
+            for key, value in list(pos_data.items())
             if "UNKNOWN" not in value.upper()
         }
         properties['lemma'] = token.get('lemma', '')

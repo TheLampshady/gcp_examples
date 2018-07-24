@@ -2,6 +2,9 @@ import re
 import logging
 import json
 
+from six import string_types
+
+
 from .base_client import GCPClient
 
 WEB_IMAGE = 'imageUri'
@@ -55,7 +58,7 @@ class ImageClient(GCPClient):
     def build_payload(image_url, features, max_results=None):
         if not features:
             features = (TEXT_DETECTION,)
-        if isinstance(features, basestring):
+        if isinstance(features, string_types):
             if features.lower() == 'all':
                 features = API_CONFIG.keys()
             else:
