@@ -16,62 +16,9 @@ pip install ipython
    1. If it is not active, you can create one on your own project
 1. Search google for an image with foreign text. Save the URL
 
-## Commands
-Run `ipython` or `python`
 
-### Setup
-This bit of code will initialize you client for calls to ML API. 
-Add API key to environment.
-```python
-import os
-from cloud_client import GCPClient
 
-api_key = os.environ.get('GCP_API_KEY')
-client = GCPClient(api_key)
-```
-### Text From Image
-Next, take the image url you found or use mine and be boring.
-```python
-image = 'https://blogs.transparent.com/italian/files/2016/05/I-cani-vanno-tenuti-1.jpg'
-```
-
-Create the payload and make the request. This will print out the text from the image.
-```python
-payload = client.get_image_payload(image)
-result = client.post(client.IMAGE_ENDPOINT, payload)
-text = client.text_from_response(result)
-print(text)
-```
-
-### Translate Text
-Keep the text from the previous section or add your own.
-```python
-text = ....
-```
-
-Create the payload and make the request. This will print out the translated text.
-```python
-payload = client.get_translate_payload(text)
-result = client.post(client.TRANSLATE_ENDPOINT, payload)
-text = client.translation_from_response(result)
-print(text)
-```
-
-### Text NLP
-Keep the text from the previous section or add your own.
-```python
-text = ....
-```
-
-Create the payload and make the request. This will print out properties of the text.
-```python
-payload = client.get_doc_payload(text)
-result = client.post(client.NLP_SYNTAX_ENDPOINT, payload)
-config = client.format_nlp(result)
-print(config)
-```
-
-### Speech to Text
+## Speech to Text
 Enable API
 ```
 https://console.developers.google.com/apis/api/speech.googleapis.com/overview
