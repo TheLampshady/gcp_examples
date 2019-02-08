@@ -3,4 +3,5 @@ google-cloud-bigquery
 google-cloud-language
 google-cloud-storage
 google-cloud-speech
+google-cloud-texttospeech
 ipython==5
